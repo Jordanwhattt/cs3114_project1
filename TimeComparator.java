@@ -55,7 +55,6 @@ public class TimeComparator {
  */
         
         MinHeap mh = new MinHeap(3,2);
-        System.out.print(mh.toString());
         mh.insert(2, 3);
         mh.insert(7, 1);
         mh.insert(9, 2);

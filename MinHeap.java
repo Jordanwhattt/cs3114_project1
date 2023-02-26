@@ -25,7 +25,7 @@ public class MinHeap {
     public MinHeap(int n, int d) {
         this.d = d;
         this.nodes = new HeapNode[n + 1];
-        this.nodes[0] = new HeapNode(0, 0);
+        this.nodes[0] = new HeapNode(-1, -1);
     }
 
 
@@ -109,6 +109,8 @@ public class MinHeap {
         return -1;
     }
 
+    
+
 
     /**
      * This method inserts a new element with "id" and "value" into the min-heap
@@ -117,32 +119,43 @@ public class MinHeap {
      * @param value
      */
     public void insert(int id, int value) {
+            // Creates an array with existing nodes plus new node at the end
+           HeapNode new_node = new HeapNode(id, value);
+           int new_length = nodes.length + 1;
+            
+           //get size of nodes
+           int size=1;
+           while(nodes[size] != null) {
+               size++;
+           }
+           
+           nodes[size] = new_node;
+            
+           HeapNode[] temp  = new HeapNode[size+1];
+           int i = 0;
+           while(i < size) {
+               temp[i] = nodes[i+1];
+               i++;
+           }
 
-        // Creates an array with existing nodes plus new node at the end
-        HeapNode new_node = new HeapNode(id, value);
-        int new_length = nodes.length + 1;
-        HeapNode[] temp  = new HeapNode[new_length];
-        for (int i = 0; i < nodes.length-1; i++){
-            temp[i] = this.nodes[i+1];
-        }
-        temp[new_length-1] = new_node;
-
-        // Loop to swap new node with parent if parent value is greater than new node value
-        int index = new_length-1;
-        while(index > 1 && temp[index-1/d].getValue() > new_node.getValue()){
-            // Finds index of new node
-            for (int j = 0; j < temp.length; j++){
-                if(temp[j] == new_node){
-                    index = j+1;
-                }
-            }
-            // Swaps parent with new node
-            HeapNode parent_node = temp[index/d];
-            temp[index/d] = new_node;
-            temp[index] = parent_node;
-            }
-        // Updates heap array
-        nodes = temp;
+                
+            
+           int index = size;
+           while(index > 1) {
+               if(temp[(index-1)/d].getValue() > new_node.getValue()) {
+                   HeapNode tmp = temp[(index-1)/d];
+                   temp[(index-1)/d] = temp[index-1];
+                   temp[index-1] = tmp;
+               }
+               index = index / d;
+           }
+           
+           for(int j = 1; j < size+1; j++) {
+               nodes[j] = temp[j-1];
+           }
+           
+      
+           
     }
 
 
