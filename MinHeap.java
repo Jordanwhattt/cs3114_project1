@@ -132,40 +132,53 @@ public class MinHeap {
            
            
            nodes[size] = new_node;
-            
-           HeapNode[] temp  = new HeapNode[size+1];
+           //Create temporary HeapNode 
+           HeapNode[] temp  = new HeapNode[size];
            int i = 0;
            while(i < size) {
                temp[i] = nodes[i+1];
                i++;
            }
 
+           
+           
+           /*
+            * int index = size;
+            * 
+            * while(index > 1) {
+            * index = index/d;
+            * }
+            */
                 
-            
-           int index = size;
-           while(index > 1) {
-               if(temp[(index-1)/d].getValue() > new_node.getValue()) {
-                   HeapNode tmp = temp[(index-1)/d];
-                   temp[(index-1)/d] = temp[index-1];
-                   temp[index-1] = tmp;
+           //parent-child comparison
+           int index = size-1;
+           while(index > 0) {
+               if(temp[(index)/d].getValue() > new_node.getValue()) {
+                   HeapNode tmp = temp[(index)/d];
+                   temp[(index)/d] = temp[(index)];
+                   temp[(index)] = tmp;
                }
                else {
                    break;
                }
-               index = index / d;
-           }
+               index = (index) / d;
+            }
            
            
-           int exp = (int) (Math.log(index) / Math.log(2));
-           if(index > 1) {
-               for(int j = size-1; j > Math.pow(2, exp)-index; j-=1) {
-                   if(temp[j].getValue() > temp[size-1].getValue()) {
-                       HeapNode tmp = temp[j];
-                       temp[j] = temp[size-1];
-                       temp[size-1] = tmp;
-                   }
-               }
-           }
+           //Left to right comparison
+           
+
+            int exp = (int) (Math.log(index) / Math.log(2));
+            if(index > 1) {
+                for(int j = size-1; j > Math.pow(2, exp); j-=1) {
+                    if(temp[j].getValue() > temp[size-1].getValue()) {
+                        HeapNode tmp = temp[j];
+                        temp[j] = temp[size-1];
+                        temp[size-1] = tmp;
+                    }
+                }
+            }
+            
            
            
            
