@@ -54,10 +54,16 @@ public class TimeComparator {
  * + (System.currentTimeMillis() - start));
  */
         
-        MinHeap mh = new MinHeap(3,2);
-        mh.insert(2, 3);
-        mh.insert(7, 1);
-        mh.insert(9, 2);
+        MinHeap mh = new MinHeap(10,2);
+        mh.insert(2, 1);
+        mh.insert(7, 4);
+        mh.insert(5, 3);
+        mh.insert(4, 2);
+        mh.insert(1, 7);
+        //mh.insert(10, 17);
+        //mh.insert(15, 27);
+        //mh.insert(3, 8);
+        //mh.insert(2, 13);
         System.out.println(mh.toString());
     }
 
