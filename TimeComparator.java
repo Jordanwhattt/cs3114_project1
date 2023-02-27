@@ -44,7 +44,8 @@ public class TimeComparator {
  * 
  * // executing the DijkstrasWithHeap method on the graph
  * System.out.println("Executing Dijkstras with heap ...");
- * DijkstrasWithHeap[] dWiths = new DijkstrasWithHeap[n];
+ * DijkstrasWithH
+ * eap[] dWiths = new DijkstrasWithHeap[n];
  * start = System.currentTimeMillis();
  * for (int i = 0; i < n; i++) {
  * dWiths[i] = new DijkstrasWithHeap(graph.n, graph.edges);
@@ -54,16 +55,18 @@ public class TimeComparator {
  * + (System.currentTimeMillis() - start));
  */
         
-        MinHeap mh = new MinHeap(10,2);
-        mh.insert(2, 1);
-        mh.insert(7, 4);
+        MinHeap mh = new MinHeap(9,2);
+        mh.insert(7, 5);
+
         mh.insert(5, 3);
-        mh.insert(4, 2);
-        mh.insert(1, 7);
-        //mh.insert(10, 17);
-        //mh.insert(15, 27);
-        //mh.insert(3, 8);
-        //mh.insert(2, 13);
+
+        mh.insert(4, 6);
+        mh.insert(2, 1);
+
+        mh.insert(10, 17);
+        mh.insert(15, 27);
+        mh.insert(3, 8);
+        mh.insert(2, 13);
         System.out.println(mh.toString());
     }
 

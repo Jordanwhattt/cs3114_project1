@@ -168,16 +168,18 @@ public class MinHeap {
            //Left to right comparison
            
 
-            int exp = (int) (Math.log(index) / Math.log(2));
-            if(index > 1) {
-                for(int j = size-1; j > Math.pow(2, exp); j-=1) {
-                    if(temp[j].getValue() > temp[size-1].getValue()) {
-                        HeapNode tmp = temp[j];
-                        temp[j] = temp[size-1];
-                        temp[size-1] = tmp;
-                    }
-                }
-            }
+           /*
+            * int exp = (int) (Math.log(index) / Math.log(2));
+            * if(index > 1) {
+            * for(int j = 0; j < Math.pow(2, exp); j++) {
+            * if(temp[j].getValue() > temp[size-1].getValue()) {
+            * HeapNode tmp = temp[j];
+            * temp[j] = temp[size-1];
+            * temp[size-1] = tmp;
+            * }
+            * }
+            * }
+            */
             
            
            
@@ -326,7 +328,7 @@ public class MinHeap {
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < this.nodes.length; i++) {
+        for (int i = 1; i < this.nodes.length; i++) {
             if (nodes[i] != null) {
                 sb.append(nodes[i].getValue());
                 sb.append(' ');
