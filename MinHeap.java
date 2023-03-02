@@ -171,9 +171,12 @@ public class MinHeap {
      *         you should return the array [5, 1]
      */
     public int[] extractMin() {
-        // The minimum value should always be the first element in the heap
+        // The minimum value should always 
+        //be the first element in the heap
         // array
         int[] min = new int[2];
+        
+
         min[0] = nodes[1].getId();
         min[1] = nodes[1].getValue();
 
@@ -316,11 +319,12 @@ public class MinHeap {
     }
 
     public boolean isEmpty() {
-        int i = 0;
-        while(nodes[i] != null) {
-            i++;
+        for(int i = 1; i < nodes.length; i++) {
+            if(nodes[i] != null) {
+                return false;
+            }
         }
-        return i == 1;
+        return true;
     }
     
     public int size() {
@@ -330,4 +334,5 @@ public class MinHeap {
         }
         return i;
     }
+    
 }

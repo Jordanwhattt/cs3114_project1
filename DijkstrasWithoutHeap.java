@@ -4,7 +4,7 @@ import java.util.ArrayList;
  * The implementation of Dijkstras shortest path algorithm by using a simple
  * linear search to find the unvisited node with the minimum distance estimate
  * 
- * @author Enter your names here
+ * @author Matthew Byun (matthewb20)
  * @version 1.1
  */
 public class DijkstrasWithoutHeap {
@@ -50,6 +50,14 @@ public class DijkstrasWithoutHeap {
         }
     }
     
+    public static boolean areSame(boolean arr[])
+    {
+       for (int i=0; i<arr.length; i++)
+           if (!arr[i])
+                return true;
+       return false;
+    }
+    
     /**
      * This method computes and returns the distances of all nodes of the graph
      * from the source node
@@ -78,18 +86,19 @@ public class DijkstrasWithoutHeap {
         ArrayList<int[]> priority_queue = adjLists.get(source-1);
         
         // loops while priority queue has elements
-        while(priority_queue.size() > 0) {
+        while(areSame(visited) && priority_queue.size()>0) {
             
-            // finds minimum value and node that produced minimum value
-            int v = priority_queue.get(0)[0];
-            int min_value = priority_queue.get(0)[1];
+            // finds minimum value and node th3t produced minimum value
+            int v[] = priority_queue.get(0);
+            // int v = priority_queue.get(0)[0];
+            int min_value = v[1];
             int index = 0;
             // loop that finds the min value and min node
             for(int i = 1; i < priority_queue.size();i++) {
-                int node_value = priority_queue.get(i)[1];
-                if(min_value > node_value) {
-                    min_value = node_value;
-                    v = priority_queue.get(i)[0];
+                int[] node_value = priority_queue.get(i);
+                if(min_value > node_value[1]) {
+                    min_value = node_value[1];
+                    v = node_value;
                     index = i;
                 }
             }
@@ -97,20 +106,21 @@ public class DijkstrasWithoutHeap {
             priority_queue.remove(priority_queue.get(index));
             
             // runs if minimum node has not been visited
-            if(visited[v-1] == false) {
+            if(!visited[v[0]-1]) {
                 // minimum node has now been visited
-                visited[v-1] = true;
+                visited[v[0]-1] = true;
                 // distance of node is set
-                distances[v-1] = min_value;
+                distances[v[0]-1] = min_value;
                 // finds neighbors of v
-                ArrayList<int[]> v_neighbors = adjLists.get(v-1);
+                ArrayList<int[]> v_neighbors = adjLists.get(v[0]-1);
                 for(int i = 0; i < v_neighbors.size(); i++) {
                     // if the neighbors have not been visited, add the edge to priority_queue
                     // and set the new weight of the edge
-                    if(visited[v_neighbors.get(i)[0]-1] == false) {
-                        int distance = v_neighbors.get(i)[1];
-                        v_neighbors.get(i)[1] = distances[v-1] + distance;
-                        priority_queue.add(v_neighbors.get(i));
+                    int current_v[] = v_neighbors.get(i);
+                    if(!visited[current_v[0]-1]) {
+                        int distance = current_v[1];
+                        current_v[1] = distances[v[0]-1] + distance;
+                        priority_queue.add(current_v);
                     }
                 }
             }

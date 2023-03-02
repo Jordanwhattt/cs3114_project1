@@ -20,9 +20,11 @@ public class TimeComparator {
         int n;
         System.out.println("Reading the graph ...");
 
-        // * // Here, you can choose between graph_1 to graph_6. For graph_1, graph_2
+        // * // Here, you can choose between graph_1 to graph_6. For graph_1,
+        // graph_2
         // * // and graph_3, we expect to see that the Dijkstra's without heap
-        // * // perform better while for graph_4, graph_5, and graph_6 we expect to
+        // * // perform better while for graph_4, graph_5, and graph_6 we expect
+        // to
         // * // find Dijkstra's with heap to be more efficient
         Graph graph = readFile("graphs/graph_1.txt");
         // *
@@ -69,38 +71,29 @@ public class TimeComparator {
  * }
  * System.out.println();
  */
-        
 
-        
         n = 5;
-        int[][] edges = { 
-            { 1, 2, 50 }, 
-            { 2, 3, 10 }, 
-            { 3, 4, 20 }, 
-            { 3, 5, 50 }, 
-            { 4, 5, 10 } 
-        };
+        int[][] edges = { { 1, 2, 50 }, { 2, 3, 10 }, { 3, 4, 20 }, { 3, 5,
+            50 }, { 4, 5, 10 } };
         int source = 2;
         // The distance of each node from the source vertex
         int[] expectedDistances = { 50, 0, 10, 30, 40 };
 
         // Running the Dijkstras implementation that uses the min-heap
+
         DijkstrasWithHeap dWith = new DijkstrasWithHeap(n, edges);
         int[] distancesWith = dWith.run(source);
 
-        
-        for(int d=0; d < distancesWith.length; d++) {
+        for (int d = 0; d < distancesWith.length; d++) {
             System.out.print(distancesWith[d] + " ");
         }
         System.out.println();
-        
-        
+
         // Running the Dijkstras implementation that uses the min-heap
         DijkstrasWithoutHeap dWithout = new DijkstrasWithoutHeap(n, edges);
         int[] distancesWithout = dWithout.run(source);
-        System.out.print(distancesWithout);
-        
-        for(int d=0; d < distancesWithout.length; d++) {
+
+        for (int d = 0; d < distancesWithout.length; d++) {
             System.out.print(distancesWithout[d] + " ");
         }
 

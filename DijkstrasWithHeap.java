@@ -73,19 +73,19 @@ public class DijkstrasWithHeap {
         this.distances[source-1] = 0;
         queue.insert(source, 0);
         int[] uv = new int[2];
-        
-        while(!queue.isEmpty()) {
+        while(queue.getHeap().length > 0) {
+            
             uv = queue.extractMin();
             int v = uv[0];
             int w = uv[1];
             if(!visited[v-1]) {
                 visited[v-1] = true;
-                distances[v-1] = adjLists.get(v).extractMin()[1];
+                distances[v-1] = w;
                 for(int u_prime = 0; u_prime < adjLists.get(v).size(); u_prime++) {
                     if(!visited[u_prime]) {
                         int distance = adjLists.get(u_prime).extractMin()[1];
                         adjLists.get(u_prime).extractMin()[1] = this.distances[v-1] + distance;
-                        queue.insert(u_prime, w);
+                        queue.decreaseKey(v, w);
                     }
                 }
             }     
