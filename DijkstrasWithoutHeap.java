@@ -12,7 +12,6 @@ public class DijkstrasWithoutHeap {
     private boolean[] visited;
     //stores distance
     private int[] distances;
-    
     // stores adjacent nodes
     private ArrayList<ArrayList<int[]>> adjLists = new ArrayList<ArrayList<int[]>>();
     /**
@@ -52,9 +51,11 @@ public class DijkstrasWithoutHeap {
     
     public static boolean areSame(boolean arr[])
     {
-       for (int i=0; i<arr.length; i++)
-           if (!arr[i])
+       for (int i=0; i<arr.length; i++) {
+           if (!arr[i]) {
                 return true;
+           }
+       }
        return false;
     }
     
@@ -69,42 +70,27 @@ public class DijkstrasWithoutHeap {
      *         of node i from the source
      */
     public int[] run(int source) {
-        
+        int d_length = distances.length;
         // distance from original source to source will always be 0
         distances[source-1] = 0;
         visited[source-1] = true;
-        
-        // If the node has no neightbors, the distance will be -1.
-        for(int d = 0; d < distances.length;d++) {
-            if (adjLists.get(d).size() == 0) {
-                distances[d] = -1;
-                visited[d] = true;
-            }
-        }
-        
         // Priority queue with nodes directly next to source node
         ArrayList<int[]> priority_queue = adjLists.get(source-1);
-        
         // loops while priority queue has elements
-        while(areSame(visited) && priority_queue.size()>0) {
-            
+        while(priority_queue.size()>0 && areSame(visited)) {
             // finds minimum value and node th3t produced minimum value
             int v[] = priority_queue.get(0);
-            // int v = priority_queue.get(0)[0];
             int min_value = v[1];
-            int index = 0;
             // loop that finds the min value and min node
-            for(int i = 1; i < priority_queue.size();i++) {
-                int[] node_value = priority_queue.get(i);
+            for(int i = 0; i < priority_queue.size()-1;i++) {
+                int[] node_value = priority_queue.get(i+1);
                 if(min_value > node_value[1]) {
                     min_value = node_value[1];
                     v = node_value;
-                    index = i;
                 }
             }
             // removes that edge from the queue
-            priority_queue.remove(priority_queue.get(index));
-            
+            priority_queue.remove(v);
             // runs if minimum node has not been visited
             if(!visited[v[0]-1]) {
                 // minimum node has now been visited
@@ -123,6 +109,12 @@ public class DijkstrasWithoutHeap {
                         priority_queue.add(current_v);
                     }
                 }
+            }
+        }
+        // If the node has no neightbors, the distance will be -1.
+        for(int d = 0; d < d_length;d++) {
+            if (distances[d] == Integer.MAX_VALUE) {
+                distances[d] = -1;  
             }
         }
         // return distance array

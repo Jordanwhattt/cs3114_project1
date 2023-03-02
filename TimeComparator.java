@@ -26,7 +26,7 @@ public class TimeComparator {
         // * // perform better while for graph_4, graph_5, and graph_6 we expect
         // to
         // * // find Dijkstra's with heap to be more efficient
-        Graph graph = readFile("graphs/graph_1.txt");
+        //Graph graph = readFile("graphs/graph_1.txt");
         // *
         // * // number of repeating the test
         n = 1;
@@ -71,7 +71,7 @@ public class TimeComparator {
  * }
  * System.out.println();
  */
-
+        
         n = 5;
         int[][] edges = { { 1, 2, 50 }, { 2, 3, 10 }, { 3, 4, 20 }, { 3, 5,
             50 }, { 4, 5, 10 } };
@@ -80,8 +80,10 @@ public class TimeComparator {
         int[] expectedDistances = { 50, 0, 10, 30, 40 };
 
         // Running the Dijkstras implementation that uses the min-heap
-
+        System.out.println("Initilizing with heap");
         DijkstrasWithHeap dWith = new DijkstrasWithHeap(n, edges);
+        System.out.println("Running with heap");
+
         int[] distancesWith = dWith.run(source);
 
         for (int d = 0; d < distancesWith.length; d++) {

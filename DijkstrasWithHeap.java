@@ -16,7 +16,7 @@ public class DijkstrasWithHeap {
     private int[] distances;
     
     // stores adjacent nodes
-    private ArrayList<MinHeap> adjLists = new ArrayList<MinHeap>();
+    private int[][] adjLists;
     
     MinHeap queue;
     /**
@@ -31,7 +31,9 @@ public class DijkstrasWithHeap {
      *            end-points of the i-th edge and edges[i][2] is its weight
      */
     public DijkstrasWithHeap(int n, int[][] edges) {
-
+        
+        adjLists = new int[][];
+        
         distances = new int[n];
         visited = new boolean[n];
         int[] prev = new int[n];
@@ -42,7 +44,7 @@ public class DijkstrasWithHeap {
         }
         
         for(int i = 0; i < n; i++) {
-            adjLists.add(new MinHeap(n, 2));
+            adjLists[i] = new MinHeap(n, 2);
         }
         
         
@@ -50,8 +52,8 @@ public class DijkstrasWithHeap {
             int u = edge[0];
             int v = edge[1];
             int w = edge[2];
-            adjLists.get(u-1).insert(v,w);
-            adjLists.get(v-1).insert(u,w);
+            adjLists[u-1].insert(v,w);
+            adjLists[v-1].insert(u,w);
         }
     }
     
@@ -67,7 +69,7 @@ public class DijkstrasWithHeap {
      *         of node i from the source
      */
     public int[] run(int source) {
-        queue = adjLists.get(source-1);
+        queue = adjLists[source-1];
 
         visited[source-1] = true;
         this.distances[source-1] = 0;
@@ -81,10 +83,11 @@ public class DijkstrasWithHeap {
             if(!visited[v-1]) {
                 visited[v-1] = true;
                 distances[v-1] = w;
-                for(int u_prime = 0; u_prime < adjLists.get(v).size(); u_prime++) {
+                for(int u_prime = 0; u_prime < adjLists[v].size(); u_prime++) {
                     if(!visited[u_prime]) {
-                        int distance = adjLists.get(u_prime).extractMin()[1];
-                        adjLists.get(u_prime).extractMin()[1] = this.distances[v-1] + distance;
+                        MinHeap distance_heap = adjLists[u_prime];
+                        distances[u_prime] = distance_heap.extractMin()[1];
+                        adjLists[u_prime].extractMin()[1] = this.distances[v-1] + distances[u_prime];
                         queue.decreaseKey(v, w);
                     }
                 }

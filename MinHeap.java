@@ -9,6 +9,7 @@ package prj1;
 public class MinHeap {
     // The parameter d in the d-ary min-heap
     private int d;
+
     // The array representation of your min-heap (It is not required to use
     // this)
     private HeapNode[] nodes;
@@ -137,6 +138,7 @@ public class MinHeap {
                i++;
            }
 
+          
                 
            //parent-child comparison
            int index = size-1;
@@ -151,6 +153,9 @@ public class MinHeap {
                }
                index = (index) / d;
             }
+           
+
+           
            
            for(int j = 1; j < size+1; j++) {
                nodes[j] = temp[j-1];
@@ -171,20 +176,24 @@ public class MinHeap {
      *         you should return the array [5, 1]
      */
     public int[] extractMin() {
-        // The minimum value should always 
-        //be the first element in the heap
+        // The minimum value should always be the first element in the heap
         // array
         int[] min = new int[2];
-        
-
         min[0] = nodes[1].getId();
         min[1] = nodes[1].getValue();
 
         // Swap first and last elements in array, delete the last element
-        nodes[1] = nodes[nodes.length - 1];
+        int last_index = 0;
+        for(int i = 1; i < nodes.length; i++) {
+            if(nodes[i] != null) {
+                last_index = i;
+            }
+        }
+        
+        nodes[1] = nodes[last_index];
         int new_length = nodes.length - 1;
         HeapNode[] temp = new HeapNode[new_length];
-        for (int i = 0; i < temp.length; i++) {
+        for (int i = 0; i < new_length; i++) {
             temp[i] = this.nodes[i];
         }
 
@@ -193,47 +202,41 @@ public class MinHeap {
         // Else, do nothing.
         HeapNode swapped_node = temp[1];
         int index = 1;
-        while (index < temp.length) {
+        while (index < last_index - 1) {
             // Finds index of new node
-            for (int i = 1; i < temp.length; i++) {
+            for (int i = 1; i < last_index; i++) {
                 if (temp[i] == swapped_node) {
                     index = i;
                 }
             }
-
-            // Finds number of children the swapped_node has
             int children = 0;
-            // If parent has d number of children, this is the index of the dth
-            // child
-            int dth_child = (index * d) + 1;
-            if (dth_child < temp.length) {
-                children = d;
-            }
-            else {
-                children = d - ((dth_child) - (temp.length - 1));
-            }
-
-            // If they have no children, this loop terminates.
-            if (children <= 0) {
-                break;
-            }
-
-            // This loop finds the smallest child.
-            HeapNode min_node = temp[(d * index) - (d - 2)];
-            for (int j = 1; j < children; j++) {
-                HeapNode child = temp[(d * index) - (d - 2 + j)];
-                if (child.getValue() < min_node.getValue()) {
-                    min_node = child;
+            for(int i = 0; i < d; i++) {
+                if(temp[(index)* d - 2 + i] != null && index*d-2+i < last_index) {
+                    children++;
                 }
             }
-
-            // Finally, swap nodes.
-            if (swapped_node.getValue() > min_node.getValue()) {
-                HeapNode temp_node = swapped_node;
-                swapped_node = min_node;
-                min_node = temp_node;
+            
+            //Find the smallest Child of index
+            int min_child = Integer.MAX_VALUE;
+            int min_child_index = -1;
+            for(int child = 0; child < children; child++) {
+                if(temp[(index) * d - 2 + child].getValue() < min_child) {
+                    min_child = temp[(index)* d - 2 + child].getValue();
+                    min_child_index = child;
+                }
+            }
+            
+            if (temp[index].getValue() > min_child) {
+                HeapNode temp_node = temp[index];
+                temp[index] = temp[(index-1) * d + 2 + min_child_index];
+                temp[(index-1) * d + 2 + min_child_index]= temp_node;
             }
         }
+        
+        for(int i = last_index; i < temp.length; i++) {
+            temp[i] = null;
+        }
+           
         nodes = temp;
         return min;
     }
@@ -248,7 +251,7 @@ public class MinHeap {
      */
     public void decreaseKey(int id, int newValue) {
         int index = -1;
-        for (int i = 1; i <= nodes.length; i++) {
+        for (int i = 1; i < nodes.length; i++) {
             if (nodes[i].getId() == id) {
                 index = i;
             }
@@ -280,22 +283,34 @@ public class MinHeap {
      * @return the array representation of heap
      */
     public int[] getHeap() {
-        int count = 0;
-        for(int i = 0; i < nodes.length; i ++) {
+        int[] heap = new int[nodes.length];
+        heap[0] = Integer.MIN_VALUE;
+        for (int i = 1; i < nodes.length; i++) {
             if(nodes[i] != null) {
-                count++;
+                heap[i] = nodes[i].getValue();
             }
         }
-        
-        
-        int[] heap = new int[count];
-        heap[0] = Integer.MIN_VALUE;
-        for (int i = 1; i < count; i++) {
-            if(nodes[i] != null) {
-                heap[i] = nodes[i].getValue(); 
-            } 
-        }
         return heap;
+    }
+    
+    
+    public int size() {
+        int size=0;
+        for(int i = 1; i < nodes.length; i++) {
+            if(nodes[i] != null) {
+                size++;
+            }
+        }
+        return size;
+    }
+    
+    
+    
+    public boolean isEmpty() {
+        if(this.size() == 0) {
+            return true;
+        }
+        return false;
     }
 
 
@@ -318,21 +333,4 @@ public class MinHeap {
         return sb.toString();
     }
 
-    public boolean isEmpty() {
-        for(int i = 1; i < nodes.length; i++) {
-            if(nodes[i] != null) {
-                return false;
-            }
-        }
-        return true;
-    }
-    
-    public int size() {
-        int i = 0;
-        while(nodes[i] != null) {
-            i++;
-        }
-        return i;
-    }
-    
 }
