@@ -70,7 +70,7 @@ public class DijkstrasWithHeap {
         queue = adjLists.get(source-1);
 
         visited[source-1] = true;
-        this.distances[source] = 0;
+        this.distances[source-1] = 0;
         queue.insert(source, 0);
         int[] uv = new int[2];
         
@@ -80,7 +80,7 @@ public class DijkstrasWithHeap {
             int w = uv[1];
             if(!visited[v-1]) {
                 visited[v-1] = true;
-                distances[v-1] = adjLists.get(0).extractMin()[1];
+                distances[v-1] = adjLists.get(v).extractMin()[1];
                 for(int u_prime = 0; u_prime < adjLists.get(v).size(); u_prime++) {
                     if(!visited[u_prime]) {
                         int distance = adjLists.get(u_prime).extractMin()[1];
@@ -94,7 +94,7 @@ public class DijkstrasWithHeap {
         
         
         
-        return queue.getHeap();
+        return distances;
     }
 
 }
