@@ -1,5 +1,7 @@
 package prj1;
 
+import java.util.ArrayList;
+
 /**
  * 
  * The implementation of Dijkstras shortest path algorithm by using
@@ -8,7 +10,15 @@ package prj1;
  * @author Enter your names here
  */
 public class DijkstrasWithHeap {
-
+    //stores all the node's statuses
+    private boolean[] visited;
+    //stores distance
+    private int[] distances;
+    
+    // stores adjacent nodes
+    private ArrayList<MinHeap> adjLists = new ArrayList<MinHeap>();
+    
+    MinHeap queue;
     /**
      * Constructor of the class
      * 
@@ -21,12 +31,30 @@ public class DijkstrasWithHeap {
      *            end-points of the i-th edge and edges[i][2] is its weight
      */
     public DijkstrasWithHeap(int n, int[][] edges) {
-        //int[] distance = new int[n];
-        //for(int v = 0; v < n; v++) {
-        //    distance[v] = Integer.MAX_VALUE;
-        //}
-    }
 
+        distances = new int[n];
+        visited = new boolean[n];
+        int[] prev = new int[n];
+        
+        for(int u = 0; u < n; u++) {
+            distances[u] = Integer.MAX_VALUE;
+            visited[u] = false;
+        }
+        
+        for(int i = 0; i < n; i++) {
+            adjLists.add(new MinHeap(n, 2));
+        }
+        
+        
+        for(int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            int w = edge[2];
+            adjLists.get(u-1).insert(v,w);
+            adjLists.get(v-1).insert(u,w);
+        }
+    }
+    
 
     /**
      * This method computes and returns the distances of all nodes of the graph
@@ -39,8 +67,34 @@ public class DijkstrasWithHeap {
      *         of node i from the source
      */
     public int[] run(int source) {
-        //TODO complete
-        return null;
+        queue = adjLists.get(source-1);
+
+        visited[source-1] = true;
+        this.distances[source] = 0;
+        queue.insert(source, 0);
+        int[] uv = new int[2];
+        
+        while(!queue.isEmpty()) {
+            uv = queue.extractMin();
+            int v = uv[0];
+            int w = uv[1];
+            if(!visited[v-1]) {
+                visited[v-1] = true;
+                distances[v-1] = adjLists.get(0).extractMin()[1];
+                for(int u_prime = 0; u_prime < adjLists.get(v).size(); u_prime++) {
+                    if(!visited[u_prime]) {
+                        int distance = adjLists.get(u_prime).extractMin()[1];
+                        adjLists.get(u_prime).extractMin()[1] = this.distances[v-1] + distance;
+                        queue.insert(u_prime, w);
+                    }
+                }
+            }     
+        }
+        
+        
+        
+        
+        return queue.getHeap();
     }
 
 }

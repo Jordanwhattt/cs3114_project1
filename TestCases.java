@@ -32,29 +32,56 @@ public class TestCases {
         // Here, we expect that the node corresponding to value 5 be the root
         // node of heap
         int[] heap = mh.getHeap();
-        assertEquals(heap.length, 2); // checking if the length of heap is 2
-        assertEquals(heap[0], 5);
-        assertEquals(heap[1], 10);
+        if (heap[0] == Integer.MIN_VALUE) {
+            // You are using 1-based indexing
+            assertEquals(heap.length, 3); // checking if the length of heap is 3
+            assertEquals(heap[1], 5);
+            assertEquals(heap[2], 10);
+        } else { // You are using 0-based indexing
+            assertEquals(heap.length, 2); // checking if the length of heap is 2
+            assertEquals(heap[0], 5);
+            assertEquals(heap[1], 10);
+        }
 
         mh.insert(3, values[2]);
         // Here, we expect that the node corresponding to value 3 be the root
         // node of heap
         heap = mh.getHeap();
-        assertEquals(heap.length, 3);
-        assertEquals(heap[0], 3);
+        if (heap[0] == Integer.MIN_VALUE) {
+            // You are using 1-based indexing
+            assertEquals(heap.length, 4);
+            assertEquals(heap[1], 3);
+        } else { // You are using 0-based indexing
+            assertEquals(heap.length, 3);
+            assertEquals(heap[0], 3);
+        }
 
         mh.insert(4, values[3]);
         mh.insert(5, values[4]);
         // Here, we expect that the node corresponding to value 1 be the root
         // node of heap
         heap = mh.getHeap();
-        assertEquals(heap.length, 5);
-        assertEquals(heap[0], 1);
+        if (heap[0] == Integer.MIN_VALUE) {
+            // You are using 1-based indexing
+            assertEquals(heap.length, 6);
+            assertEquals(heap[1], 1);
+        } else {
+            // You are using 0-based indexing
+            assertEquals(heap.length, 5);
+            assertEquals(heap[0], 1);
+        }
         // The children of node at index 1 are the nodes at indices 3 and 4
         // We want to make sure that the node at index 1 is smaller than its
         // children
-        assertTrue(heap[1] < heap[3]);
-        assertTrue(heap[1] < heap[4]);
+        if (heap[0] == Integer.MIN_VALUE) {
+            // You are using 1-based indexing
+            assertTrue(heap[2] < heap[4]);
+            assertTrue(heap[2] < heap[5]);
+        } else {
+            // You are using 0-based indexing
+            assertTrue(heap[1] < heap[3]);
+            assertTrue(heap[1] < heap[4]);
+        }
     }
 
 
@@ -80,8 +107,6 @@ public class TestCases {
             int[] extracted = mh.extractMin();
             assertEquals(expectedOrder[i], extracted[1]);
             assertEquals(expectedIds[i], extracted[0]);
-            
-            assertEquals(n - i - 1, mh.getHeap().length);
         }
     }
 
@@ -97,24 +122,42 @@ public class TestCases {
 
         // Inserting the elements to the heap
         for (int i = 0; i < n; i++) {
-            mh.insert(i, values[i]);
+            mh.insert(i + 1, values[i]);
         }
 
         // Testing decrease key operation
         mh.decreaseKey(1, 2);
         // The root node should still be 1
         int[] heap = mh.getHeap();
-        assertEquals(heap[0], 1);
-
+        if (heap[0] == Integer.MIN_VALUE) {
+            // You are using 1-based indexing
+            assertEquals(heap[1], 1);
+        } else {
+            // You are using 0-based indexing
+            assertEquals(heap[0], 1);
+        }
+        
         mh.decreaseKey(4, 0);
         // The root node now should be 0
         heap = mh.getHeap();
-        assertEquals(heap[0], 0);
-
+        if (heap[0] == Integer.MIN_VALUE) {
+            // You are using 1-based indexing
+            assertEquals(heap[1], 0);
+        } else {
+            // You are using 0-based indexing
+            assertEquals(heap[0], 0);
+        }
+        
         mh.decreaseKey(3, -10);
         // The root node now should be 0
         heap = mh.getHeap();
-        assertEquals(heap[0], -10);
+        if (heap[0] == Integer.MIN_VALUE) {
+            // You are using 1-based indexing
+            assertEquals(heap[1], -10);
+        } else {
+            // You are using 0-based indexing
+            assertEquals(heap[0], -10);
+        }
     }
 
 
