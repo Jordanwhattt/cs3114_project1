@@ -74,9 +74,12 @@ public class TimeComparator {
         
         MinHeap mh = new MinHeap(10,2);
         
+        mh.insert(5, 6);
         mh.insert(2, 1);
         mh.insert(3, 4);
-        mh.insert(5, 6);
+        
+        int x = mh.getHeap().length;
+        System.out.print(x);
         int[] test = mh.extractMin();
         System.out.println(test[0] + " " + test[1]);
         
@@ -93,6 +96,7 @@ public class TimeComparator {
         DijkstrasWithHeap dWith = new DijkstrasWithHeap(n, edges);
         System.out.println("Running with heap");
 
+        
         int[] distancesWith = dWith.run(source);
 
         for (int d = 0; d < distancesWith.length; d++) {

@@ -86,6 +86,7 @@ public class DijkstrasWithHeap {
             if(visited[v-1] == false) {
                 visited[v-1] = true;
                 dist_array[v-1] = dist_array[source-1] + w;
+                Q.insert(v, w);
             }
             
             for(int u_prime = 1; u_prime < adjLists.get(v).size(); u_prime++) {

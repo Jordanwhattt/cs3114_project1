@@ -119,45 +119,39 @@ public class MinHeap {
      * @param value
      */
     public void insert(int id, int value) {
-            // Creates an array with existing nodes plus new node at the end
-           HeapNode new_node = new HeapNode(id, value);
-           
-            
-           //get size of nodes
-           int size = this.size();
-           HeapNode[] temp;
+        // Creates an array with existing nodes plus new node at the end
+        HeapNode new_node = new HeapNode(id, value);
 
-           temp = new HeapNode[size + 1];
-           int i=1;
-           while(i < size) {
-               temp[i] = nodes[i+1];
-               i++;
-           }
+        // get size of nodes
+        int size = this.size();
+        HeapNode[] temp;
 
-          
-                
-           //parent-child comparison
-           int index = size-1;
-           while(index > 0) {
-               if(temp[(index)/d].getValue() > new_node.getValue()) {
-                   HeapNode tmp = temp[(index)/d];
-                   temp[(index)/d] = temp[(index)];
-                   temp[(index)] = tmp;
-               }
-               else {
-                   break;
-               index = (index) / d;
+        temp = new HeapNode[nodes.length + 1];
+        int i = 1;
+        while (i < nodes.length-1) {
+            temp[i-1] = nodes[i];
+            i++;
+        }
+        
+        
+        temp[size] = new_node;
+        
+        // parent-child comparison
+        int index = size;
+        while (index > 0) {
+            if (temp[(index) / d ].getValue() > new_node.getValue()) {
+                HeapNode tmp = temp[(index) / d];
+                temp[(index) / d] = new_node;
+                temp[index] = tmp;
             }
-           
+            index = (index) / d;
+        }
+        size++;
 
-           
-           
-           for(int j = 1; j < size+1; j++) {
-               nodes[j] = temp[j-1];
-           }
-           
-      
-           
+
+        for (int j = 1; j < size + 1; j++) {
+            nodes[j] = temp[j - 1];
+        }
     }
 
 
@@ -294,9 +288,9 @@ public class MinHeap {
      * @return the array representation of heap
      */
     public int[] getHeap() {
-        int[] heap = new int[nodes.length];
+        int[] heap = new int[this.size() + 1];
         heap[0] = Integer.MIN_VALUE;
-        for (int i = 1; i < nodes.length; i++) {
+        for (int i = 1; i < this.size() + 1; i++) {
             if(nodes[i] != null) {
                 heap[i] = nodes[i].getValue();
             }
