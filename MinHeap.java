@@ -183,9 +183,8 @@ public class MinHeap {
                 last_index = i;
             }
         }
-        
-        nodes[1] = nodes[last_index];
-        HeapNode[] temp = new HeapNode[last_index];
+
+        HeapNode[] temp = new HeapNode[nodes.length];
         for (int i = 0; i < last_index; i++) {
             temp[i] = this.nodes[i];
         }
@@ -215,10 +214,14 @@ public class MinHeap {
                 }
             }
             
+            if(children == 0) {
+                break;
+            }
+            
             //Find the smallest Child of index
             int min_child = Integer.MAX_VALUE;
             int min_child_index = -1;
-            for(int child = 1; child <= children; child++) {
+            for(int child = 0; child < children; child++) {
                 if(temp[(index) * d - 2 + child].getValue() < min_child) {
                     min_child = temp[(index)* d - 2 + child].getValue();
                     min_child_index = child;
@@ -231,6 +234,7 @@ public class MinHeap {
                 HeapNode temp_node = temp[index];
                 temp[index] = temp[(index-1) * d + 2 + min_child_index];
                 temp[(index-1) * d + 2 + min_child_index]= temp_node;
+                index = (index-1)*d+2+min_child_index;
             } else {
                 break;
             }
@@ -241,7 +245,7 @@ public class MinHeap {
         }
            
         nodes = temp;
-        int[] returned_array = {nodes[1].getId(), nodes[1].getValue()};
+        int[] returned_array = {extracted_node.getId(), extracted_node.getValue()};
         return returned_array;
     
     }

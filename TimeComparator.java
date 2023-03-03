@@ -77,11 +77,9 @@ public class TimeComparator {
         mh.insert(5, 6);
         mh.insert(2, 1);
         mh.insert(3, 4);
-        
-        int x = mh.getHeap().length;
-        System.out.print(x);
-        int[] test = mh.extractMin();
-        System.out.println(test[0] + " " + test[1]);
+
+        int[] arr = mh.extractMin();
+        System.out.println(arr[0] + " " + arr[1]);
         
         
         n = 5;
