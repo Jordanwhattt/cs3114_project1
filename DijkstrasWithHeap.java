@@ -10,15 +10,15 @@ import java.util.ArrayList;
  * @author Enter your names here
  */
 public class DijkstrasWithHeap {
-    //stores all the node's statuses
+    // stores all the node's statuses
     private boolean[] visited;
-    //stores distance
-    private int[] distances;
-    
+    private int n;
+
     // stores adjacent nodes
-    private int[][] adjLists;
-    
-    MinHeap queue;
+    private ArrayList<MinHeap> adjLists = new ArrayList<MinHeap>();
+
+    int[] dist_array;
+
     /**
      * Constructor of the class
      * 
@@ -31,32 +31,28 @@ public class DijkstrasWithHeap {
      *            end-points of the i-th edge and edges[i][2] is its weight
      */
     public DijkstrasWithHeap(int n, int[][] edges) {
-        
-        adjLists = new int[][];
-        
-        distances = new int[n];
+        this.n = n;
         visited = new boolean[n];
         int[] prev = new int[n];
-        
-        for(int u = 0; u < n; u++) {
-            distances[u] = Integer.MAX_VALUE;
+
+        for (int u = 0; u < n; u++) {
             visited[u] = false;
         }
         
-        for(int i = 0; i < n; i++) {
-            adjLists[i] = new MinHeap(n, 2);
+        for (int i = 0; i <= n; i++) {
+            adjLists.add(new MinHeap(n, 2));
         }
-        
-        
-        for(int[] edge : edges) {
+
+        for (int[] edge : edges) {
             int u = edge[0];
             int v = edge[1];
             int w = edge[2];
-            adjLists[u-1].insert(v,w);
-            adjLists[v-1].insert(u,w);
+            adjLists.get(u).insert(v, w);
+            adjLists.get(v).insert(u, w);
+            dist_array = new int[n];
         }
     }
-    
+
 
     /**
      * This method computes and returns the distances of all nodes of the graph
@@ -69,35 +65,40 @@ public class DijkstrasWithHeap {
      *         of node i from the source
      */
     public int[] run(int source) {
-        queue = adjLists[source-1];
-
+        
         visited[source-1] = true;
-        this.distances[source-1] = 0;
-        queue.insert(source, 0);
-        int[] uv = new int[2];
-        while(queue.getHeap().length > 0) {
-            
-            uv = queue.extractMin();
-            int v = uv[0];
-            int w = uv[1];
-            if(!visited[v-1]) {
-                visited[v-1] = true;
-                distances[v-1] = w;
-                for(int u_prime = 0; u_prime < adjLists[v].size(); u_prime++) {
-                    if(!visited[u_prime]) {
-                        MinHeap distance_heap = adjLists[u_prime];
-                        distances[u_prime] = distance_heap.extractMin()[1];
-                        adjLists[u_prime].extractMin()[1] = this.distances[v-1] + distances[u_prime];
-                        queue.decreaseKey(v, w);
-                    }
-                }
-            }     
+        for(int i = 0; i < this.n; i++) {
+            if(i == source - 1) {
+                dist_array[i] = 0;
+            }else {
+                dist_array[i] = Integer.MAX_VALUE;
+            }    
         }
+
+        MinHeap Q = adjLists.get(source);
         
-        
-        
-        
-        return distances;
+        while(!Q.isEmpty()) {
+            
+            int[] min_node = Q.extractMin(); 
+            int v = min_node[0];
+            int w = min_node[1];
+            
+            if(visited[v-1] == false) {
+                visited[v-1] = true;
+                dist_array[v-1] = dist_array[source-1] + w;
+            }
+            
+            for(int u_prime = 1; u_prime < adjLists.get(v).size(); u_prime++) {
+                if(visited[u_prime - 1] == false) {
+                    Q.insert(u_prime, dist_array[v-1] + w);
+                }
+            }
+  
+            source = v;
+        }
+                
+
+        return dist_array;
     }
 
 }

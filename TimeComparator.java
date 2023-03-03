@@ -72,6 +72,15 @@ public class TimeComparator {
  * System.out.println();
  */
         
+        MinHeap mh = new MinHeap(10,2);
+        
+        mh.insert(2, 1);
+        mh.insert(3, 4);
+        mh.insert(5, 6);
+        int[] test = mh.extractMin();
+        System.out.println(test[0] + " " + test[1]);
+        
+        
         n = 5;
         int[][] edges = { { 1, 2, 50 }, { 2, 3, 10 }, { 3, 4, 20 }, { 3, 5,
             50 }, { 4, 5, 10 } };
