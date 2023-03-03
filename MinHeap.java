@@ -196,7 +196,7 @@ public class MinHeap {
         HeapNode swapped_node = temp[1];
         int index = 1;
         
-   
+        int min_child = Integer.MAX_VALUE;
         
         while (index < last_index - 1) {
             // Finds index of new node
@@ -219,11 +219,11 @@ public class MinHeap {
             }
             
             //Find the smallest Child of index
-            int min_child = Integer.MAX_VALUE;
+            
             int min_child_index = -1;
             for(int child = 0; child < children; child++) {
-                if(temp[(index) * d - 2 + child].getValue() < min_child) {
-                    min_child = temp[(index)* d - 2 + child].getValue();
+                if(temp[(index-1) * d + 2 + child].getValue() < min_child) {
+                    min_child = temp[(index-1)* d + 2 + child].getValue();
                     min_child_index = child;
                 }
             }
@@ -234,7 +234,7 @@ public class MinHeap {
                 HeapNode temp_node = temp[index];
                 temp[index] = temp[(index-1) * d + 2 + min_child_index];
                 temp[(index-1) * d + 2 + min_child_index]= temp_node;
-                index = (index-1)*d+2+min_child_index;
+                index = (index-1)*d+2+children;
             } else {
                 break;
             }
@@ -260,7 +260,7 @@ public class MinHeap {
      */
     public void decreaseKey(int id, int newValue) {
         int index = -1;
-        for (int i = 1; i < nodes.length; i++) {
+        for (int i = 1; i <= this.size(); i++) {
             if (nodes[i].getId() == id) {
                 index = i;
             }

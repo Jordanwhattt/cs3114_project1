@@ -224,8 +224,9 @@ public class TestCases {
 
         // Checking whether the returned distances match the expected distances
         // or not
+
         for (int i = 0; i < n; i++) {
-            assertEquals(distancesWith[i], expectedDistances[i]);
+                       assertEquals(distancesWith[i], expectedDistances[i]);
         }
 
         // Running the Dijkstras implementation that does not use the min-heap

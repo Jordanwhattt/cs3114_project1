@@ -76,26 +76,39 @@ public class DijkstrasWithHeap {
         }
 
         MinHeap Q = adjLists.get(source);
-        
+
         while(!Q.isEmpty()) {
             
             int[] min_node = Q.extractMin(); 
             int v = min_node[0];
             int w = min_node[1];
             
-            if(visited[v-1] == false) {
+            if(!visited[v-1]) {
                 visited[v-1] = true;
                 dist_array[v-1] = dist_array[source-1] + w;
-                Q.insert(v, w);
-            }
-            
-            for(int u_prime = 1; u_prime < adjLists.get(v).size(); u_prime++) {
-                if(visited[u_prime - 1] == false) {
-                    Q.insert(u_prime, dist_array[v-1] + w);
+                
+                MinHeap neighbors = adjLists.get(v);
+                int[] key_node;
+                
+                
+                
+                for(int i = 0; i < neighbors.size(); i++ ) {
+                    key_node = neighbors.extractMin();
+                    if(!visited[key_node[0] - 1]) {
+                        int distance = key_node[1];
+                        Q.insert(key_node[0], key_node[1] + dist_array[v-1]);
+                        Q.decreaseKey(key_node[0],  distance + dist_array[v-1]);
+                    }
                 }
+     
             }
-  
-            source = v;
+
+        }
+        
+        for(int i = 0; i < visited.length; i++) {
+            if(!visited[i]) {
+                dist_array[i] = -1;
+            }
         }
                 
 
